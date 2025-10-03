@@ -1,4 +1,3 @@
-(https://github.com/user-attachments/files/22678859/index.15.html)
 <html lang="id">
 <head>
     <meta charset="UTF-8">
