@@ -122,7 +122,7 @@
                             <div class="flex items-center gap-4">
                                 <i data-lucide="brain-circuit" class="w-8 h-8 text-sky-400"></i>
                                 <div>
-                                    <h4 class="font-bold text-white">Zen</h4>
+                                    <h4 class="font-bold text-white">Alvin</h4>
                                     <p class="text-sm text-slate-400">Visi & Strategi</p>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                             <div class="flex items-center gap-4">
                                 <i data-lucide="palette" class="w-8 h-8 text-sky-400"></i>
                                 <div>
-                                    <h4 class="font-bold text-white">Alvin</h4>
+                                    <h4 class="font-bold text-white">Zen</h4>
                                     <p class="text-sm text-slate-400">Desain & UI/UX</p>
                                 </div>
                             </div>
