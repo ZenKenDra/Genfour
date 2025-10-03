@@ -1,4 +1,3 @@
-[index (12).html](https://github.com/user-attachments/files/22678592/index.12.html)
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -105,6 +104,85 @@
                 </div>
             </div>
         </main>
+
+        <footer class="bg-slate-900/70 border-t border-slate-800 mt-16 py-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white">Tentang Kami</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-300">
+                        Kami adalah tim kreatif dari Binus University, terdiri dari lima mahasiswa yang bersemangat menciptakan solusi digital untuk mempermudah proses kliping, baik untuk kreator individu maupun agensi.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-400 mb-8 text-center">Anggota & Peran</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <i data-lucide="brain-circuit" class="w-8 h-8 text-sky-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Zen</h4>
+                                    <p class="text-sm text-slate-400">Visi & Strategi</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-slate-300">Memimpin arah platform dengan fokus pada pengalaman pengguna dan pengembangan jangka panjang.</p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <i data-lucide="cpu" class="w-8 h-8 text-sky-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Farrel</h4>
+                                    <p class="text-sm text-slate-400">Teknologi & Inovasi</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-slate-300">Mengembangkan sistem web yang lancar, interaktif, dan scalable.</p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <i data-lucide="palette" class="w-8 h-8 text-sky-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Alvin</h4>
+                                    <p class="text-sm text-slate-400">Desain & UI/UX</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-slate-300">Menjaga tampilan web tetap intuitif, rapi, dan menarik.</p>
+                        </div>
+                        
+                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <i data-lucide="gem" class="w-8 h-8 text-sky-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Azizah</h4>
+                                    <p class="text-sm text-slate-400">Konten & Kreativitas</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-slate-300">Memastikan setiap fitur mendukung kreativitas pengguna dengan estetika yang tepat.</p>
+                        </div>
+
+                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex items-center gap-4">
+                                <i data-lucide="git-merge" class="w-8 h-8 text-sky-400"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Reuben</h4>
+                                    <p class="text-sm text-slate-400">Operasional & Integrasi</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-sm text-slate-300">Menghubungkan teknologi, desain, dan konten agar workflow berjalan efisien.</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="max-w-3xl mx-auto mt-16 text-center">
+                    <h3 class="text-xl font-semibold text-sky-400 mb-4">Filosofi Utama</h3>
+                    <blockquote class="text-lg text-slate-300 italic border-l-4 border-sky-500 pl-6">
+                        “Sebagai mahasiswa Binus, kami menggabungkan teknologi, kreativitas, dan strategi untuk membuat kliping menjadi cepat, rapi, dan mudah diakses, mendukung kreator dan agensi dalam satu platform.”
+                    </blockquote>
+                </div>
+            </div>
+        </footer>
     </div>
     
     <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 hidden">
@@ -418,5 +496,4 @@
     </script>
 </body>
 </html>
-
 
