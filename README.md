@@ -1,499 +1,389 @@
-
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clipz - Auto Video Clipping (AI Simulator)</title>
-
+    <title>Clipz - The Creator's Growth Engine</title>
+    <!-- Memuat Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
-
+    <!-- Memuat Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; }
-        .clip-list-scrollbar::-webkit-scrollbar { width: 6px; }
-        .clip-list-scrollbar::-webkit-scrollbar-track { background: #1e293b; }
-        .clip-list-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        .clip-list-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        .btn-disabled { cursor: not-allowed; opacity: 0.5; }
-        .loader {
-            border: 4px solid #384252;
-            border-top: 4px solid #38bdf8;
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            animation: spin 1s linear infinite;
+        /* Mengatur font default */
+        body {
+            font-family: 'Inter', sans-serif;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .modal-content { animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* Menambahkan efek gradien pada teks */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        /* Efek hover pada tombol */
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.2);
+        }
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-slate-900 text-gray-200">
 
-    <div class="min-h-screen flex flex-col">
-        <header class="bg-slate-900/50 backdrop-blur-sm border-b border-slate-800 sticky top-0 z-30">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-sky-500 p-2 rounded-lg">
-                            <i data-lucide="clapperboard" class="w-6 h-6 text-white"></i>
+    <!-- Header / Navigasi -->
+    <header class="fixed w-full bg-slate-900/80 backdrop-blur-sm z-50 border-b border-slate-700">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-3xl font-extrabold">
+                <span class="text-gradient bg-gradient-to-r from-blue-400 to-cyan-300">Clipz</span>
+            </a>
+            
+            <!-- Menu Navigasi -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#what-is-clipz" class="text-gray-300 hover:text-blue-400 transition-colors">Apa itu Clipz?</a>
+                <a href="#target-audience" class="text-gray-300 hover:text-blue-400 transition-colors">Untuk Siapa?</a>
+                <a href="#pricing" class="text-gray-300 hover:text-blue-400 transition-colors">Harga</a>
+                <a href="#" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg">
+                    Mulai Gratis
+                </a>
+            </div>
+            
+            <!-- Tombol Menu Mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </nav>
+        
+        <!-- Menu Mobile (Tampil/Sembunyi) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 p-4">
+            <a href="#what-is-clipz" class="block py-2 px-3 rounded hover:bg-slate-700">Apa itu Clipz?</a>
+            <a href="#target-audience" class="block py-2 px-3 rounded hover:bg-slate-700">Untuk Siapa?</a>
+            <a href="#pricing" class="block py-2 px-3 rounded hover:bg-slate-700">Harga</a>
+            <a href="#" class="block w-full text-center mt-2 cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg">
+                Mulai Gratis
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Bagian Hero (Judul Utama) -->
+        <section class="pt-32 pb-24 container mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                <span class="block">The Creator's</span>
+                <span class="text-gradient bg-gradient-to-r from-blue-400 to-cyan-300">Growth Engine</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+                Ubah konten panjang Anda (video atau podcast) menjadi puluhan aset klip pendek yang siap viral di media sosial.
+            </p>
+            <a href="#" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 text-lg rounded-lg">
+                Mulai Gratis Sekarang
+            </a>
+
+            <!-- Mockup UI (berdasarkan PPT hal 2) -->
+            <div class="max-w-4xl mx-auto mt-20 bg-slate-800 rounded-xl shadow-2xl p-4 border border-slate-700">
+                <div class="flex items-center pb-3 border-b border-slate-600">
+                    <div class="flex space-x-1.5">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <span class="ml-3 text-sm text-gray-400">Clipz - Genfour Dashboard</span>
+                </div>
+                <div class="flex flex-col md:flex-row gap-4 mt-4">
+                    <!-- Kolom Utama (Video) -->
+                    <div class="flex-grow bg-slate-700 rounded-lg p-4">
+                        <div class="w-full h-48 md:h-72 bg-gray-900 rounded-md flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-slate-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9A2.25 2.25 0 0 0 13.5 5.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z" />
+                            </svg>
                         </div>
-                        <h1 class="text-2xl font-bold text-white tracking-tight">Clipz</h1>
-                        <span class="bg-slate-700 text-sky-400 text-xs font-medium px-2.5 py-0.5 rounded-full">Beta Z1</span>
+                        <div class="mt-4 flex flex-col md:flex-row gap-3">
+                            <input type="text" placeholder="Tempelkan link YouTube..." class="flex-grow bg-slate-800 border border-slate-600 rounded-md p-2 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition-colors">Muat Video</button>
+                        </div>
+                    </div>
+                    <!-- Sidebar (Rekomendasi) -->
+                    <div class="w-full md:w-64 bg-slate-700 rounded-lg p-4">
+                        <h4 class="font-semibold text-white mb-3">Rekomendasi Klip</h4>
+                        <p class="text-xs text-gray-400 mb-4">Momen penting yang ditemukan oleh AI kami akan muncul di sini.</p>
+                        <div class="bg-gray-900 rounded-md p-3 mb-2">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-slate-500 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                                </svg>
+                                <span class="text-sm text-gray-300">Belum ada klip</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900/50 rounded-md p-3 mb-2 opacity-50">
+                             <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-slate-600 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                                </svg>
+                                <span class="text-sm text-slate-500">Menunggu video...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </header>
-
-        <main class="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
-                
-                <div class="lg:col-span-2 flex flex-col gap-6">
-                    <div id="videoPlayerContainer" class="bg-slate-900 rounded-2xl aspect-video flex items-center justify-center border border-slate-800 overflow-hidden">
-                        <div id="videoPlaceholder" class="text-center text-slate-500">
-                            <i data-lucide="video" class="w-16 h-16 mx-auto"></i>
-                            <p class="mt-2">Video player akan muncul di sini.</p>
-                        </div>
-                        <div id="youtubePlayer" class="w-full h-full hidden"></div>
-                    </div>
-
-                    <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-col gap-4">
-                        <div class="flex flex-col sm:flex-row items-center gap-3">
-                            <div class="relative w-full flex items-center">
-                                <i data-lucide="youtube" class="w-6 h-6 text-red-500 absolute left-3 pointer-events-none"></i>
-                                <input id="ytInput" type="text" placeholder="Tempelkan link YouTube di sini..." class="w-full pl-12 pr-4 py-2 bg-slate-800 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 transition">
-                            </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto">
-                               <button id="clearUrlBtn" class="p-2 text-slate-400 bg-slate-800 hover:bg-slate-700 rounded-lg hover:text-white transition hidden" title="Hapus URL">
-                                    <i data-lucide="x" class="w-5 h-5"></i>
-                                </button>
-                                <button id="loadVideoBtn" class="w-full px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition whitespace-nowrap">
-                                    Muat Video
-                                </button>
-                            </div>
-                        </div>
-                        <div id="errorMessage" class="text-red-400 text-sm mt-1 hidden"></div>
-                        <div class="border-t border-slate-800 my-2"></div>
-                        <div class="flex flex-wrap items-center gap-3">
-                            <button id="autoClipBtn" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg transition btn-disabled" disabled>
-                                <i data-lucide="sparkles" class="w-4 h-4"></i> Auto Clip (AI)
-                            </button>
-                            <button id="exportBtn" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg transition btn-disabled" disabled>
-                                <i data-lucide="download" class="w-4 h-4"></i> Export Semua
-                            </button>
-                            <button id="deleteAllBtn" class="flex items-center gap-2 bg-red-500/20 hover:bg-red-500/40 text-red-300 font-semibold px-4 py-2 rounded-lg transition btn-disabled" disabled>
-                                <i data-lucide="trash-2" class="w-4 h-4"></i> Hapus Semua
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col h-[85vh] lg:h-auto">
-                    <div class="flex-shrink-0">
-                        <h2 class="text-xl font-bold text-white">Rekomendasi Klip</h2>
-                        <p class="text-sm text-slate-400 mt-1 mb-4">Momen penting yang ditemukan oleh AI akan muncul di sini.</p>
-                    </div>
-                    
-                    <div id="clipListContainer" class="flex-grow overflow-y-auto clip-list-scrollbar -mr-3 pr-3 relative">
-                        <div id="clipList" class="space-y-4"></div>
-                        <div id="statusOverlay" class="absolute inset-0 flex flex-col items-center justify-center text-center text-slate-500 bg-slate-900/80 backdrop-blur-sm rounded-lg transition-opacity duration-300 hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer class="bg-slate-900/70 border-t border-slate-800 mt-16 py-12">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-white">Tentang Kami</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-300">
-                        Kami adalah tim kreatif dari Binus University, terdiri dari lima mahasiswa yang bersemangat menciptakan solusi digital untuk mempermudah proses kliping, baik untuk kreator individu maupun agensi.
+        </section>
+        
+        <!-- Bagian "Apa itu Clipz?" -->
+        <section id="what-is-clipz" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-base font-semibold text-blue-400 tracking-wide uppercase">Apa itu Clipz?</h2>
+                    <p class="mt-2 text-3xl md:text-4xl font-extrabold text-white">
+                        Bukan Sekadar Alat, Ini Adalah Studio Konten Video Pendek Anda.
+                    </p>
+                    <p class="mt-4 text-lg text-gray-300">
+                        Clipz adalah solusi SaaS (Software as a Service) berbasis AI yang dibuat untuk memecahkan masalah utama kreator: <strong class="text-white">Creator Burnout</strong>. Kami menggabungkan kecepatan AI untuk menemukan momen terbaik dengan kontrol kreatif manusia untuk hasil yang sempurna.
                     </p>
                 </div>
+            </div>
+        </section>
 
-                <div>
-                    <h3 class="text-xl font-semibold text-sky-400 mb-8 text-center">Anggota & Peran</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <div class="flex items-center gap-4">
-                                <i data-lucide="brain-circuit" class="w-8 h-8 text-sky-400"></i>
-                                <div>
-                                    <h4 class="font-bold text-white">Alvin</h4>
-                                    <p class="text-sm text-slate-400">Visi & Strategi</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-sm text-slate-300">Memimpin arah platform dengan fokus pada pengalaman pengguna dan pengembangan jangka panjang.</p>
+        <!-- Bagian Target Audience (Untuk Siapa?) -->
+        <section id="target-audience" class="py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-base font-semibold text-blue-400 tracking-wide uppercase">Untuk Siapa?</h2>
+                    <p class="mt-2 text-3xl md:text-4xl font-extrabold text-white">
+                        Dibuat untuk Setiap Tipe Kreator
+                    </p>
+                </div>
+                
+                <!-- Grid Target Audience -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Card 1: Podcaster -->
+                    <div class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700">
+                        <div class="bg-blue-600/20 text-blue-300 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+                            </svg>
                         </div>
-
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <div class="flex items-center gap-4">
-                                <i data-lucide="cpu" class="w-8 h-8 text-sky-400"></i>
-                                <div>
-                                    <h4 class="font-bold text-white">Farrel</h4>
-                                    <p class="text-sm text-slate-400">Teknologi & Inovasi</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-sm text-slate-300">Mengembangkan sistem web yang lancar, interaktif, dan scalable.</p>
-                        </div>
-
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <div class="flex items-center gap-4">
-                                <i data-lucide="palette" class="w-8 h-8 text-sky-400"></i>
-                                <div>
-                                    <h4 class="font-bold text-white">Zen</h4>
-                                    <p class="text-sm text-slate-400">Desain & UI/UX</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-sm text-slate-300">Menjaga tampilan web tetap intuitif, rapi, dan menarik.</p>
-                        </div>
-                        
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <div class="flex items-center gap-4">
-                                <i data-lucide="gem" class="w-8 h-8 text-sky-400"></i>
-                                <div>
-                                    <h4 class="font-bold text-white">Azizah</h4>
-                                    <p class="text-sm text-slate-400">Konten & Kreativitas</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-sm text-slate-300">Memastikan setiap fitur mendukung kreativitas pengguna dengan estetika yang tepat.</p>
-                        </div>
-
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <div class="flex items-center gap-4">
-                                <i data-lucide="git-merge" class="w-8 h-8 text-sky-400"></i>
-                                <div>
-                                    <h4 class="font-bold text-white">Reuben</h4>
-                                    <p class="text-sm text-slate-400">Operasional & Integrasi</p>
-                                </div>
-                            </div>
-                            <p class="mt-4 text-sm text-slate-300">Menghubungkan teknologi, desain, dan konten agar workflow berjalan efisien.</p>
-                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Podcaster</h3>
+                        <p class="text-gray-300">Mengubah audio panjang menjadi klip video dinamis, lengkap dengan subtitle & audiogram yang menarik.</p>
                     </div>
-                </div>
+                    
+                    <!-- Card 2: Youtuber Edukasi -->
+                    <div class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700">
+                        <div class="bg-blue-600/20 text-blue-300 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Youtuber Edukasi</h3>
+                        <p class="text-gray-300">Mengekstrak "daging" dan insight penting secara otomatis untuk teaser media sosial yang padat informasi.</p>
+                    </div>
 
-                 <div class="max-w-3xl mx-auto mt-16 text-center">
-                    <h3 class="text-xl font-semibold text-sky-400 mb-4">Filosofi Utama</h3>
-                    <blockquote class="text-lg text-slate-300 italic border-l-4 border-sky-500 pl-6">
-                        “Sebagai mahasiswa Binus, kami menggabungkan teknologi, kreativitas, dan strategi untuk membuat kliping menjadi cepat, rapi, dan mudah diakses, mendukung kreator dan agensi dalam satu platform.”
-                    </blockquote>
+                    <!-- Card 3: Gamer -->
+                    <div class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700">
+                        <div class="bg-blue-600/20 text-blue-300 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0ZM12 15.75a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm.002-3a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm-3.752.002a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm3.75.75a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm-3.75 0a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm0 3a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm3.75 0a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm-3.75 3a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Zm3.75 0a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-1.5 0v-.008a.75.75 0 0 1 .75-.75Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Gamer</h3>
+                        <p class="text-gray-300">Menemukan momen *killstreak* epik atau komedi dari VOD berjam-jam tanpa perlu *scrolling* manual.</p>
+                    </div>
+
+                    <!-- Card 4: Agensi & Bisnis -->
+                    <div class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700">
+                        <div class="bg-blue-600/20 text-blue-300 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.07a2.25 2.25 0 0 1-2.25 2.25h-13.5A2.25 2.25 0 0 1 2.25 18.22V10.18a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 20.25 10.18v4.07ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 15a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 8.63c.09-.436.434-.78.865-.865l.38.083c.06.012.122.012.183 0l.38-.083a1.12 1.12 0 0 1 .866.865l.083.38a.998.998 0 0 0 0 .183l-.083.38a1.12 1.12 0 0 1-.866.865l-.38-.083a.998.998 0 0 0-.183 0l-.38.083a1.12 1.12 0 0 1-.865-.865l-.083-.38a.998.998 0 0 0 0-.183l.083-.38Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.63c.09-.436.434-.78.865-.865l.38.083c.06.012.122.012.183 0l.38-.083a1.12 1.12 0 0 1 .866.865l.083.38a.998.998 0 0 0 0 .183l-.083.38a1.12 1.12 0 0 1-.866.865l-.38-.083a.998.998 0 0 0-.183 0l-.38.083a1.12 1.12 0 0 1-.865-.865l-.083-.38a.998.998 0 0 0 0-.183l.083-.38Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Agensi & Bisnis</h3>
+                        <p class="text-gray-300">Menghemat ratusan jam kerja produksi tim Anda dan meningkatkan volume konten klien secara drastis.</p>
+                    </div>
+
                 </div>
             </div>
-        </footer>
-    </div>
-    
-    <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 hidden">
-        <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 w-full max-w-sm modal-content">
-            <div class="p-6 text-center">
-                <div class="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400"></i>
+        </section>
+
+        <!-- Bagian Harga (Pricing) -->
+        <section id="pricing" class="py-24 bg-slate-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-base font-semibold text-blue-400 tracking-wide uppercase">Model Bisnis</h2>
+                    <p class="mt-2 text-3xl md:text-4xl font-extrabold text-white">
+                        Harga Transparan untuk Semua Kebutuhan
+                    </p>
                 </div>
-                <h3 id="modalTitle" class="text-lg font-semibold text-white"></h3>
-                <p id="modalMessage" class="text-sm text-slate-400 mt-2"></p>
+                
+                <!-- Grid Harga -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+                    <!-- Paket 1: Gratis -->
+                    <div class="bg-slate-900 p-8 rounded-xl shadow-lg border border-slate-700 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white mb-2">Paket Gratis</h3>
+                        <p class="text-gray-400 mb-6 h-12">Target: Akuisisi pengguna masif untuk mencoba platform.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-white">Gratis</span>
+                            <span class="text-gray-400">Selamanya</span>
+                        </div>
+                        <ul class="space-y-3 text-gray-300 mb-8 flex-grow">
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                30 Menit Video / Bulan
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Fitur Edit Dasar
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-yellow-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" />
+                                </svg>
+                                Dengan Watermark CLIPZ
+                            </li>
+                        </ul>
+                        <a href="#" class="w-full text-center cta-button bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-5 rounded-lg transition-colors">
+                            Mulai Gratis
+                        </a>
+                    </div>
+                    
+                    <!-- Paket 2: Pro (Paling Populer) -->
+                    <div class="bg-blue-600 p-8 rounded-xl shadow-2xl relative flex flex-col">
+                        <span class="absolute top-0 right-0 -mt-3 mr-6 bg-cyan-300 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Paling Populer</span>
+                        <h3 class="text-2xl font-bold text-white mb-2">Paket Pro</h3>
+                        <p class="text-blue-100 mb-6 h-12">Target: Kreator Serius & Profesional yang butuh hasil maksimal.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-white">Rp 199k</span>
+                            <span class="text-blue-100">/ Bulan</span>
+                        </div>
+                        <ul class="space-y-3 text-white mb-8 flex-grow">
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-300 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Kuota Jauh Lebih Besar
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-300 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Tanpa Watermark
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-300 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Branding Kit Otomatis
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-cyan-300 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Akses Penuh Studio Editor
+                            </li>
+                        </ul>
+                        <a href="#" class="w-full text-center cta-button bg-white hover:bg-gray-100 text-blue-700 font-semibold py-3 px-5 rounded-lg transition-colors">
+                            Pilih Paket Pro
+                        </a>
+                    </div>
+                    
+                    <!-- Paket 3: Team -->
+                    <div class="bg-slate-900 p-8 rounded-xl shadow-lg border border-slate-700 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white mb-2">Clipz Team</h3>
+                        <p class="text-gray-400 mb-6 h-12">Target: Sultan, Brand, & Agensi yang ingin terima beres A-Z.</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-extrabold text-white">Custom</span>
+                            <span class="text-gray-400">/ Bulan</span>
+                        </div>
+                        <ul class="space-y-3 text-gray-300 mb-8 flex-grow">
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Kuota Unlimited
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Dedicated Content Strategist
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-400 mr-2 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Layanan Penuh A sampai Z
+                            </li>
+                        </ul>
+                        <a href="#" class="w-full text-center cta-button bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-5 rounded-lg transition-colors">
+                            Hubungi Sales
+                        </a>
+                    </div>
+
+                </div>
             </div>
-            <div class="grid grid-cols-2 gap-3 p-4 bg-slate-900/50 rounded-b-xl">
-                <button id="modalCancelBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-semibold transition">Batal</button>
-                <button id="modalConfirmBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition">Hapus</button>
-            </div>
+        </section>
+
+        <!-- Bagian CTA Terakhir -->
+        <section class="py-24 container mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+                Siap Mengubah Konten Anda Menjadi <span class="text-gradient bg-gradient-to-r from-blue-400 to-cyan-300">Aset Viral</span>?
+            </h2>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+                Hentikan *creator burnout* dan biarkan AI kami bekerja untuk Anda. Coba Clipz gratis hari ini.
+            </p>
+            <a href="#" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 text-lg rounded-lg">
+                Mulai Gratis Sekarang
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-700 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <p>&copy; 2025 Clipz. Dibuat berdasarkan Business Plan Anda. www.clipz.com</p>
         </div>
-    </div>
+    </footer>
 
-
+    <!-- Script untuk Menu Mobile -->
     <script>
-        // --- State ---
-        let currentVideoId = null;
-        let currentVideoTitle = "";
-        let clipsData = [];
-        let deletionHandler = null;
-        let player; 
-        let videoDuration = 0;
-
-        function onYouTubeIframeAPIReady() {}
-
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-
-            const ytInput = document.getElementById('ytInput');
-            const loadVideoBtn = document.getElementById('loadVideoBtn');
-            const errorMessage = document.getElementById('errorMessage');
-            const videoPlaceholder = document.getElementById('videoPlaceholder');
-            const autoClipBtn = document.getElementById('autoClipBtn');
-            const exportBtn = document.getElementById('exportBtn');
-            const deleteAllBtn = document.getElementById('deleteAllBtn');
-            const clipList = document.getElementById('clipList');
-            const statusOverlay = document.getElementById('statusOverlay');
-            const deleteModal = document.getElementById('deleteModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalMessage = document.getElementById('modalMessage');
-            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-            const modalCancelBtn = document.getElementById('modalCancelBtn');
-            const clearUrlBtn = document.getElementById('clearUrlBtn');
-
-            const setStatus = (type, message = '') => {
-                statusOverlay.classList.remove('hidden');
-                let content = '';
-                switch (type) {
-                    case 'loading': content = `<div class="loader"></div><p class="mt-4 font-semibold text-sky-400">AI sedang menganalisis video...</p><p class="text-sm">${message}</p>`; break;
-                    case 'empty': content = `<i data-lucide="film" class="w-16 h-16"></i><p class="mt-4 font-semibold">Belum Ada Klip</p><p class="text-sm">Klik 'Auto Clip' untuk memulai.</p>`; break;
-                    case 'error': content = `<i data-lucide="alert-circle" class="w-16 h-16 text-red-400"></i><p class="mt-4 font-semibold">Terjadi Kesalahan</p><p class="text-sm">${message}</p>`; break;
-                }
-                statusOverlay.innerHTML = content;
-                lucide.createIcons();
-            };
-            const hideStatus = () => statusOverlay.classList.add('hidden');
-            const updateButtonsState = () => {
-                const hasVideo = !!currentVideoId;
-                const hasClips = clipsData.length > 0;
-                autoClipBtn.disabled = !hasVideo;
-                exportBtn.disabled = !hasClips;
-                deleteAllBtn.disabled = !hasClips;
-                [autoClipBtn, exportBtn, deleteAllBtn].forEach(btn => btn.classList.toggle('btn-disabled', btn.disabled));
-            };
-            const showError = (message) => { errorMessage.textContent = message; errorMessage.classList.remove('hidden'); };
-            const hideError = () => errorMessage.classList.add('hidden');
-
-            const getYouTubeVideoId = (url) => {
-                let videoId = null;
-                const patterns = [/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/, /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/, /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/];
-                for (const pattern of patterns) {
-                    const match = url.match(pattern);
-                    if (match && match[1]) { videoId = match[1]; break; }
-                }
-                return videoId;
-            };
-
-            const createPlayer = (videoId) => {
-                videoPlaceholder.classList.add('hidden');
-                document.getElementById('youtubePlayer').classList.remove('hidden');
-                if (player) { player.loadVideoById(videoId); } 
-                else {
-                    player = new YT.Player('youtubePlayer', {
-                        height: '100%', width: '100%', videoId: videoId,
-                        playerVars: { 'playsinline': 1 },
-                        events: { 'onStateChange': onPlayerStateChange }
-                    });
-                }
-            };
-
-            function onPlayerStateChange(event) {
-                if (event.data == YT.PlayerState.PLAYING) {
-                    videoDuration = player.getDuration();
-                    currentVideoTitle = player.getVideoData().title;
-                    console.log(`Video duration: ${videoDuration}s, Title: "${currentVideoTitle}"`);
-                }
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
             }
-            
-            const timeStringToSeconds = (timeStr) => {
-                const parts = timeStr.split(':').map(Number);
-                let seconds = 0;
-                if (parts.length === 3) { seconds += parts[0] * 3600 + parts[1] * 60 + parts[2]; } 
-                else if (parts.length === 2) { seconds += parts[0] * 60 + parts[1]; }
-                return seconds;
-            };
+        });
 
-            loadVideoBtn.addEventListener('click', () => {
-                const url = ytInput.value.trim();
-                if (!url) { showError("Silakan masukkan link YouTube."); return; }
-                hideError();
-                const videoId = getYouTubeVideoId(url);
-                if (videoId) {
-                    currentVideoId = videoId;
-                    createPlayer(videoId);
-                    resetClips();
-                } else {
-                    showError("Link YouTube tidak valid. Mohon periksa kembali.");
-                    currentVideoId = null;
-                }
-                updateButtonsState();
+        // Menutup menu mobile jika link di-klik
+        document.querySelectorAll('#mobile-menu a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('mobile-menu').classList.add('hidden');
             });
-
-            ytInput.addEventListener('input', () => clearUrlBtn.classList.toggle('hidden', ytInput.value.length === 0));
-
-            const resetApplication = () => {
-                ytInput.value = '';
-                hideError();
-                if (player && typeof player.stopVideo === 'function') { player.stopVideo(); }
-                document.getElementById('youtubePlayer').classList.add('hidden');
-                videoPlaceholder.classList.remove('hidden');
-                currentVideoId = null;
-                currentVideoTitle = "";
-                videoDuration = 0;
-                resetClips();
-                updateButtonsState();
-                clearUrlBtn.classList.add('hidden');
-            };
-            clearUrlBtn.addEventListener('click', resetApplication);
-            
-            const extractKeyPhrases = (title) => {
-                const separators = / dan | vs | versus | tentang | mengenai | dari | dalam |, |\||&/i;
-                const stopWords = new Set(['cara', 'membuat', 'tutorial', 'review', 'unboxing', 'ini', 'itu', 'adalah', 'terbaik', 'paling', 'belajar', 'rahasia', 'prediksi']);
-                const chunks = title.split(separators);
-                const keyPhrases = chunks.map(chunk => {
-                    const cleanChunk = chunk.replace(/[^\w\s\d]/g, ' ').trim();
-                    const words = cleanChunk.split(/\s+/);
-                    const cleanWords = words.filter(word => !stopWords.has(word.toLowerCase()));
-                    let finalPhrase = cleanWords.join(' ').trim();
-                    return finalPhrase.split(' ').map(w => w ? w.charAt(0).toUpperCase() + w.slice(1) : '').join(' ');
-                }).filter(phrase => phrase.length > 3 && phrase.split(' ').length < 5);
-                return [...new Set(keyPhrases)];
-            };
-            
-            const getSimulatedAIClips = (videoId, duration, title) => {
-                console.log(`Starting AI simulation for Video ID: ${videoId}, Title: "${title}"`);
-                const keyPhrases = extractKeyPhrases(title);
-                console.log("Key phrases extracted:", keyPhrases);
-                
-                const singlePhraseTemplates = ["Analisis Mendalam: [P1]", "Poin Penting tentang [P1]", "Fakta Mengejutkan tentang [P1]", "Penjelasan Konsep [P1]", "Dampak dari [P1]"];
-                const doublePhraseTemplates = ["Hubungan Antara [P1] dan [P2]", "Perbandingan: [P1] vs [P2]", "Apakah [P1] Mempengaruhi [P2]?", "Strategi [P1] untuk [P2]"];
-                const fallbackTitles = ["Poin Argumen Utama", "Fakta yang Diungkap", "Titik Balik Cerita", "Penjelasan Kompleks", "Statistik Kunci", "Momen Paling Penting"];
-
-                const formatTime = (totalSeconds) => {
-                    const hours = Math.floor(totalSeconds / 3600);
-                    const minutes = Math.floor((totalSeconds % 3600) / 60);
-                    const seconds = Math.floor(totalSeconds % 60);
-                    const paddedMinutes = String(minutes).padStart(2, '0');
-                    const paddedSeconds = String(seconds).padStart(2, '0');
-                    if (hours > 0) return `${String(hours).padStart(2, '0')}:${paddedMinutes}:${paddedSeconds}`;
-                    return `${paddedMinutes}:${paddedSeconds}`;
-                };
-
-                const generatedClips = [];
-                let desiredNumClips;
-                const durationInMinutes = duration / 60;
-                if (durationInMinutes < 10) desiredNumClips = Math.floor(Math.random() * 2) + 3;
-                else if (durationInMinutes < 30) desiredNumClips = Math.floor(Math.random() * 3) + 5;
-                else if (durationInMinutes < 60) desiredNumClips = Math.floor(Math.random() * 3) + 8;
-                else desiredNumClips = Math.floor(Math.random() * 3) + 10;
-                
-                const finalNumClips = Math.min(desiredNumClips, 10);
-                const bucketSize = duration / finalNumClips;
-
-                for (let i = 0; i < finalNumClips; i++) {
-                    let clipTitle;
-                    if (keyPhrases.length >= 2 && Math.random() > 0.4) {
-                        const template = doublePhraseTemplates[Math.floor(Math.random() * doublePhraseTemplates.length)];
-                        const p1 = keyPhrases[Math.floor(Math.random() * keyPhrases.length)];
-                        let p2;
-                        do { p2 = keyPhrases[Math.floor(Math.random() * keyPhrases.length)]; } while (p1 === p2);
-                        clipTitle = template.replace("[P1]", p1).replace("[P2]", p2);
-                    } else if (keyPhrases.length >= 1) {
-                        const template = singlePhraseTemplates[Math.floor(Math.random() * singlePhraseTemplates.length)];
-                        const p1 = keyPhrases[i % keyPhrases.length];
-                        clipTitle = template.replace("[P1]", p1);
-                    } else {
-                        clipTitle = fallbackTitles[i % fallbackTitles.length];
-                    }
-                    
-                    const bucketStart = i * bucketSize;
-                    const clipDuration = Math.floor(Math.random() * 31) + 20;
-                    const maxStartOffset = bucketSize - clipDuration - 5;
-                    const startOffset = Math.random() * (maxStartOffset > 0 ? maxStartOffset : 1);
-                    const start = bucketStart + startOffset;
-                    const end = start + clipDuration;
-                    
-                    generatedClips.push({ title: clipTitle, start: formatTime(start), end: formatTime(end) });
-                }
-                return new Promise(resolve => setTimeout(() => resolve(generatedClips), 2000));
-            };
-
-            autoClipBtn.addEventListener('click', async () => {
-                if (!currentVideoId || !player) return;
-                const currentDuration = player.getDuration();
-                if (currentDuration <= 0) { showError("Tunggu video dimuat sepenuhnya sebelum membuat klip."); return; }
-                hideError();
-                resetClips();
-                setStatus('loading');
-                const suggestions = await getSimulatedAIClips(currentVideoId, currentDuration, currentVideoTitle);
-                if (suggestions && Array.isArray(suggestions)) {
-                    clipsData = suggestions;
-                    renderClips();
-                } else {
-                    setStatus('error', 'Simulasi AI gagal menghasilkan data.');
-                }
-            });
-
-            const renderClips = () => {
-                clipList.innerHTML = '';
-                if (clipsData.length > 0) {
-                    hideStatus();
-                    clipsData.forEach((clip, index) => {
-                        const clipElement = document.createElement('div');
-                        clipElement.className = "bg-slate-800 p-3 rounded-xl flex items-start gap-4 border border-slate-700 transition hover:border-sky-500 cursor-pointer";
-                        const startSeconds = timeStringToSeconds(clip.start);
-                        clipElement.dataset.startSeconds = startSeconds;
-                        const thumbIndex = (index % 3) + 1;
-                        const thumbnailUrl = `https://img.youtube.com/vi/${currentVideoId}/${thumbIndex}.jpg`;
-                        clipElement.innerHTML = `
-                            <div class="w-16 h-28 rounded-lg overflow-hidden flex-shrink-0 bg-slate-700">
-                                <img src="${thumbnailUrl}" class="w-full h-full object-cover" alt="Video thumbnail">
-                            </div>
-                            <div class="flex-grow pt-1">
-                                <h3 class="font-bold text-white text-sm leading-tight">${clip.title}</h3>
-                                <p class="text-xs text-slate-400 mt-2">Timestamp: ${clip.start} - ${clip.end}</p>
-                            </div>
-                            <div class="flex flex-col gap-2 pt-1">
-                                <button class="download-btn p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition" title="Download Klip"><i data-lucide="download" class="w-4 h-4"></i></button>
-                                <button class="delete-btn p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-md transition" title="Hapus Klip"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
-                        `;
-                        clipElement.addEventListener('click', (e) => {
-                            if (e.target.closest('button')) return;
-                            if (player && typeof player.seekTo === 'function') {
-                                player.seekTo(startSeconds, true); player.playVideo();
-                                clipElement.classList.add('ring-2', 'ring-sky-500');
-                                setTimeout(() => clipElement.classList.remove('ring-2', 'ring-sky-500'), 1000);
-                            }
-                        });
-                        clipElement.querySelector('.delete-btn').addEventListener('click', () => openDeleteModal(index));
-                        clipElement.querySelector('.download-btn').addEventListener('click', () => downloadClip(index));
-                        clipList.appendChild(clipElement);
-                    });
-                } else { setStatus('empty'); }
-                lucide.createIcons();
-                updateButtonsState();
-            };
-
-            const resetClips = () => { clipsData = []; renderClips(); };
-
-            const downloadClip = (index) => {
-                const clip = clipsData[index];
-                const content = `Judul: ${clip.title}\nTimestamp: ${clip.start} - ${clip.end}\nVideo ID: ${currentVideoId}\n\nGenerated by Clipz AI`;
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a'); a.href = url; a.download = `Clip_${clip.title.replace(/[^a-zA-Z0-9]/g, '_')}.txt`; a.click(); URL.revokeObjectURL(url);
-            };
-            exportBtn.addEventListener('click', () => {
-                if (clipsData.length === 0) return;
-                const allClipsContent = clipsData.map((c, i) => `Klip ${i+1}\nJudul: ${c.title}\nTimestamp: ${c.start} - ${clip.end}`).join('\n\n');
-                const content = `Daftar Klip untuk Video ID: ${currentVideoId}\n\n${allClipsContent}`;
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a'); a.href = url; a.download = `Semua_Klip_${currentVideoId}.txt`; a.click(); URL.revokeObjectURL(url);
-            });
-            const openDeleteModal = (index) => {
-                if (typeof index === 'number') {
-                    modalTitle.textContent = "Hapus Klip Ini?";
-                    modalMessage.textContent = "Anda yakin ingin menghapus klip ini? Tindakan ini tidak dapat diurungkan.";
-                    deletionHandler = () => { clipsData.splice(index, 1); renderClips(); };
-                } else {
-                    modalTitle.textContent = "Hapus Semua Klip?";
-                    modalMessage.textContent = `Anda yakin ingin menghapus semua ${clipsData.length} klip? Tindakan ini tidak dapat diurungkan.`;
-                    deletionHandler = resetClips;
-                }
-                deleteModal.classList.remove('hidden');
-            };
-            const closeDeleteModal = () => { deleteModal.classList.add('hidden'); deletionHandler = null; };
-            modalConfirmBtn.addEventListener('click', () => { if (deletionHandler) { deletionHandler(); } closeDeleteModal(); });
-            modalCancelBtn.addEventListener('click', closeDeleteModal);
-            deleteAllBtn.addEventListener('click', () => openDeleteModal(null));
-
-            setStatus('empty');
-            updateButtonsState();
         });
     </script>
+
 </body>
 </html>
-
